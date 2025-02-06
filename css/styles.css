@@ -1,0 +1,266 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  background-color: #f4f6f9;
+}
+
+.title {
+  text-align: center;
+}
+
+form {
+  max-width: 500px;
+  margin: auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+label {
+  display: block;
+  margin: 10px 0 5px;
+}
+
+input,
+select {
+  width: 100%;
+  padding: 10px;
+  margin: 5px 0 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.message {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  height: 50px;
+  margin: 10px;
+}
+
+.success {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #6fcf97;
+  color: #fff;
+}
+
+.error {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #eb5757;
+  color: #fff;
+  height: 100%;
+  padding: 10px;
+}
+
+.btn {
+  padding: 8px 12px;
+  text-decoration: none;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+  color: white;
+  display: inline-block;
+  text-align: center;
+  margin: 2px;
+}
+
+.styled-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+  font-size: 16px;
+  min-width: 700px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.styled-table thead {
+  background: #007bff;
+  color: white;
+  text-align: left;
+}
+
+.styled-table th,
+.styled-table td {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.styled-table tbody tr:nth-child(even) {
+  background: #f3f3f3;
+}
+
+.styled-table tbody tr:hover {
+  background: #ddd;
+}
+
+.sidebar {
+  position: sticky;
+  top: 0;
+  min-width: 200px;
+  max-width: 200px;
+  background: #1e3a8a;
+  color: white;
+  padding: 20px;
+  height: 100vh;
+}
+
+.sidebar a {
+  color: white;
+  text-decoration: none;
+  display: block;
+  margin: 10px 0;
+  font-weight: 300;
+}
+.sidebar a:hover {
+  font-weight: bolder;
+}
+
+.main {
+  flex-grow: 1;
+  padding: 20px;
+}
+
+.card-container {
+  display: flex;
+  gap: 15px;
+}
+
+.card {
+  flex: 1;
+  padding: 20px;
+  text-align: center;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  border: none;
+  font-size: 16px;
+  text-decoration: none;
+}
+
+.card:hover {
+  opacity: 0.8;
+}
+
+.section {
+  display: block; /* Ajustado para evitar PHP dentro de CSS */
+  margin-top: 15px;
+  padding: 15px;
+  border: 1px solid #ddd;
+  background: #f9f9f9;
+}
+
+.orange {
+  background: #f2994a;
+}
+
+.green {
+  background: #6fcf97;
+}
+
+.blue {
+  background: #4cafdb;
+}
+
+.red {
+  background: #eb5757;
+}
+/* Nuevo código CSS */
+.container {
+  width: 80%;
+  margin: 0 auto;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+}
+
+.btn {
+  padding: 8px 12px;
+  text-decoration: none;
+  border-radius: 5px;
+  font-size: 14px;
+  color: white;
+  display: inline-block;
+  text-align: center;
+  margin: 2px;
+  cursor: pointer;
+}
+
+.btn:hover {
+  opacity: 0.8; /* Actualización de background en hover */
+}
+.container_both-inp {
+  width: 80%;
+  margin: 0 auto;
+}
+
+.form {
+  max-width: 600px;
+  margin: auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.form_both-inp {
+  max-width: 600px;
+  margin: auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.both-inp {
+  display: flex; /* Hace que el contenedor sea flexible */
+  flex-wrap: wrap; /* Permite que los elementos se envuelvan si es necesario */
+  gap: 10px; /* Añade un espacio entre los elementos */
+  margin-bottom: 15px;
+}
+
+.both-inp .input-group {
+  flex: 1 1 48%; /* Ajusta el ancho de cada grupo de inputs */
+  display: flex;
+  flex-direction: column; /* Coloca el label encima del input */
+}
+
+.both-inp label {
+  margin-bottom: 5px;
+}
+
+.both-inp input,
+.both-inp select,
+.both-inp button,
+.both-inp a.btn {
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+}
+.content {
+  max-height: 100px; /* Altura máxima para el contenido */
+  max-width: 200px;
+  overflow-y: auto; /* Scroll vertical para el contenido */
+  display: block; /* Necesario para que el scroll funcione correctamente */
+  white-space: pre-line; /* Mantiene los saltos de línea */
+}
