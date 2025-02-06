@@ -1,6 +1,12 @@
 <?php
-// Incluir archivo de configuración de la base de datos
+session_start();
 require_once 'config.php';
+
+// Verificar si el usuario ha iniciado sesión y es un médico (rol 2)
+if (!isset($_SESSION['usuario_id']) || $_SESSION['rol_id'] != 2) {
+    header("Location: login.php");
+    exit();
+}
 
 // Obtener el ID del historial médico desde la URL
 $id_historial = isset($_GET['id']) ? $_GET['id'] : die('ERROR: ID no encontrado.');
@@ -16,44 +22,37 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $descripcion = htmlspecialchars(strip_tags($_POST['descripcion']));
 
     // Actualizar el historial médico en la base de datos
-    $query = "UPDATE HistorialMedico SET ID_Pac = ?, Fecha = ?, Descripcion = ? WHERE ID_Historial = ?";
-    if ($stmt = $conn->prepare($query)) {
-        $stmt->bind_param('issi', $id_paciente, $fecha, $descripcion, $id_historial);
-
-        if ($stmt->execute()) {
-            $success = "Historial médico actualizado con éxito.";
-        } else {
-            $error = "Error al actualizar el historial médico. Por favor, inténtelo de nuevo.";
-        }
+    $query = "UPDATE historialmedico SET ID_Pac = ?, Fecha = ?, Descripcion = ? WHERE ID_Historial = ?";
+    $stmt = $pdo->prepare($query);
+    if ($stmt->execute([$id_paciente, $fecha, $descripcion, $id_historial])) {
+        header("Location: dashboard.php?seccion=informes");
+        exit();
     } else {
-        $error = "Error en la preparación de la consulta. Por favor, inténtelo de nuevo.";
+        $error = "Error al actualizar el historial médico. Por favor, inténtelo de nuevo.";
     }
 }
 
 // Obtener los detalles del historial médico actual
 $query = "SELECT h.ID_Historial, h.ID_Pac, h.Fecha, h.Descripcion, p.Nombre, p.Apellido
-          FROM HistorialMedico h
-          JOIN Pacientes p ON h.ID_Pac = p.ID_Pac
+          FROM historialmedico h
+          JOIN pacientes p ON h.ID_Pac = p.ID_Pac
           WHERE h.ID_Historial = ?";
-if ($stmt = $conn->prepare($query)) {
-    $stmt->bind_param('i', $id_historial);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    if ($result->num_rows == 1) {
-        $row = $result->fetch_assoc();
-        $id_paciente = $row['ID_Pac'];
-        $fecha = $row['Fecha'];
-        $descripcion = $row['Descripcion'];
-    } else {
-        $error = "No se encontró el historial médico.";
-    }
+$stmt = $pdo->prepare($query);
+$stmt->execute([$id_historial]);
+$row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+if ($row) {
+    $id_paciente = $row['ID_Pac'];
+    $fecha = $row['Fecha'];
+    $descripcion = $row['Descripcion'];
 } else {
-    $error = "Error en la preparación de la consulta.";
+    $error = "No se encontró el historial médico.";
 }
 
 // Obtener la lista de pacientes
-$query_pacientes = "SELECT ID_Pac, Nombre, Apellido FROM Pacientes";
-$result_pacientes = $conn->query($query_pacientes);
+$query_pacientes = "SELECT ID_Pac, Nombre, Apellido FROM pacientes";
+$result_pacientes = $pdo->query($query_pacientes);
+$pacientes = $result_pacientes->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -76,12 +75,12 @@ $result_pacientes = $conn->query($query_pacientes);
             <div class="form-group">
                 <label for="id_paciente">Paciente</label>
                 <select id="id_paciente" name="id_paciente" required>
-                    <?php if ($result_pacientes->num_rows > 0): ?>
-                        <?php while ($paciente = $result_pacientes->fetch_assoc()): ?>
-                            <option value="<?php echo $paciente['ID_Pac']; ?>" <?php echo ($paciente['ID_Pac'] == $id_paciente) ? 'selected' : ''; ?>>
-                                <?php echo $paciente['Nombre'] . ' ' . $paciente['Apellido']; ?>
+                    <?php if (count($pacientes) > 0): ?>
+                        <?php foreach ($pacientes as $paciente): ?>
+                            <option value="<?php echo htmlspecialchars($paciente['ID_Pac']); ?>" <?php echo ($paciente['ID_Pac'] == $id_paciente) ? 'selected' : ''; ?>>
+                                <?php echo htmlspecialchars($paciente['Nombre'] . ' ' . $paciente['Apellido']); ?>
                             </option>
-                        <?php endwhile; ?>
+                        <?php endforeach; ?>
                     <?php else: ?>
                         <option value="">No hay pacientes disponibles</option>
                     <?php endif; ?>
@@ -89,11 +88,11 @@ $result_pacientes = $conn->query($query_pacientes);
             </div>
             <div class="form-group">
                 <label for="fecha">Fecha del Informe</label>
-                <input type="date" id="fecha" name="fecha" value="<?php echo $fecha; ?>" required>
+                <input type="date" id="fecha" name="fecha" value="<?php echo htmlspecialchars($fecha); ?>" required>
             </div>
             <div class="form-group">
                 <label for="descripcion">Descripción del Informe</label>
-                <textarea id="descripcion" name="descripcion" rows="5" required><?php echo $descripcion; ?></textarea>
+                <textarea id="descripcion" name="descripcion" rows="5" required><?php echo htmlspecialchars($descripcion); ?></textarea>
             </div>
             <div class="both-inp">
                 <div class="input-group">

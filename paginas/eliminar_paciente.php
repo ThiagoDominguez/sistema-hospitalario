@@ -1,54 +1,49 @@
 <?php
-$conn = new mysqli("localhost", "root", "", "sghsantarosa");
+require_once 'config.php';
 
-if ($conn->connect_error) {
-  die("Conexión fallida: " . $conn->connect_error);
-}
+try {
+    // Obtener el ID del paciente desde la URL
+    if (isset($_GET['id'])) {
+        $id_pac = intval($_GET['id']);
 
-if (isset($_GET['id'])) {
-  $id_pac = intval($_GET['id']);
+        // Iniciar la transacción
+        $pdo->beginTransaction();
 
-  // Iniciar la transacción
-  $conn->begin_transaction();
+        // Obtener el ID de usuario del paciente
+        $query_usuario_id = "SELECT ID_Usuario FROM pacientes WHERE ID_Pac = ?";
+        $stmt_usuario_id = $pdo->prepare($query_usuario_id);
+        $stmt_usuario_id->execute([$id_pac]);
+        $usuario = $stmt_usuario_id->fetch(PDO::FETCH_ASSOC);
 
-  try {
-    // Obtener el ID de usuario del paciente
-    $query_usuario_id = "SELECT ID_Usuario FROM Pacientes WHERE ID_Pac = ?";
-    $stmt_usuario_id = $conn->prepare($query_usuario_id);
-    $stmt_usuario_id->bind_param('i', $id_pac);
-    $stmt_usuario_id->execute();
-    $result_usuario_id = $stmt_usuario_id->get_result();
+        if ($usuario) {
+            $id_usuario = $usuario['ID_Usuario'];
 
-    if ($result_usuario_id->num_rows > 0) {
-      $row = $result_usuario_id->fetch_assoc();
-      $id_usuario = $row['ID_Usuario'];
+            // Eliminar el paciente de la tabla Pacientes
+            $query_paciente = "DELETE FROM pacientes WHERE ID_Pac = ?";
+            $stmt_paciente = $pdo->prepare($query_paciente);
+            $stmt_paciente->execute([$id_pac]);
 
-      // Eliminar el paciente de la tabla Pacientes
-      $query_paciente = "DELETE FROM Pacientes WHERE ID_Pac = ?";
-      $stmt_paciente = $conn->prepare($query_paciente);
-      $stmt_paciente->bind_param('i', $id_pac);
-      $stmt_paciente->execute();
+            // Eliminar las credenciales del paciente de la tabla Usuarios
+            $query_usuario = "DELETE FROM usuarios WHERE ID_Usuario = ?";
+            $stmt_usuario = $pdo->prepare($query_usuario);
+            $stmt_usuario->execute([$id_usuario]);
 
-      // Eliminar las credenciales del paciente de la tabla Usuarios
-      $query_usuario = "DELETE FROM Usuarios WHERE ID_Usuario = ?";
-      $stmt_usuario = $conn->prepare($query_usuario);
-      $stmt_usuario->bind_param('i', $id_usuario);
-      $stmt_usuario->execute();
+            // Confirmar la transacción
+            $pdo->commit();
 
-      // Confirmar la transacción
-      $conn->commit();
-
-      header("Location: dashboard.php?seccion=gestionar_pacientes");
-      exit();
+            header("Location: dashboard.php?seccion=gestionar_pacientes");
+            exit();
+        } else {
+            throw new Exception("Paciente no encontrado.");
+        }
     } else {
-      throw new Exception("Paciente no encontrado.");
+        throw new Exception("ID del paciente no proporcionado.");
     }
-  } catch (Exception $e) {
+} catch (Exception $e) {
     // Revertir la transacción en caso de error
-    $conn->rollback();
+    $pdo->rollBack();
     echo "Error al eliminar: " . $e->getMessage();
-  }
 }
 
-$conn->close();
+$pdo = null;
 ?>

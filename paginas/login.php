@@ -1,17 +1,22 @@
 <?php
 session_start();
-include 'config.php'; // Configuración de conexión
+// Mostrar errores de PHP
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+// Conexión a la base de datos
+include("config.php");
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $email = $_POST['email'];
   $password = $_POST['password'];
 
   // Verificar si el usuario existe
-  $stmt = $conn->prepare("SELECT * FROM Usuarios WHERE Email = ?");
-  $stmt->bind_param("s", $email);
+  $stmt = $pdo->prepare("SELECT * FROM usuarios WHERE Email = ?");
+  $stmt->bindParam(1, $email, PDO::PARAM_STR);
   $stmt->execute();
-  $result = $stmt->get_result();
-  $user = $result->fetch_assoc();
+  $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
   if ($user && password_verify($password, $user['Contraseña'])) {
     // El login es exitoso, almacenamos información del usuario en la sesión
@@ -58,18 +63,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <input type="email" id="email" name="email" required>
         <label for="password">Contraseña</label>
         <input type="password" id="password" name="password" required>
-
       </div>
 
-
       <button type="submit" class="btn blue">Iniciar sesión</button>
-      <p>¿No tienes una cuenta? <a href="../index.php">Registrate aquí</a>.</p>
+      <p>¿No tienes una cuenta? <a href="../index.php">Regístrate aquí</a>.</p>
     </form>
-
   </div>
 
-  <?php if (isset($error))
-    echo "<p class='error'>$error</p>"; ?>
+  <?php if (isset($error)) echo "<p class='error'>$error</p>"; ?>
 </body>
 
 </html>

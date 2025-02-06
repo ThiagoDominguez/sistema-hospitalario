@@ -1,54 +1,47 @@
 <?php
-$conn = new mysqli("localhost", "root", "", "sghsantarosa");
+require_once 'config.php';
 
-if ($conn->connect_error) {
-  die("Conexión fallida: " . $conn->connect_error);
-}
-
+// Obtener datos del médico
 if (isset($_GET['id'])) {
-  $id_med = intval($_GET['id']);
+    $id_med = intval($_GET['id']);
 
-  // Iniciar la transacción
-  $conn->begin_transaction();
+    // Iniciar la transacción
+    $pdo->beginTransaction();
 
-  try {
-    // Obtener el ID de usuario del médico
-    $query_usuario_id = "SELECT ID_Usuario FROM PersonalMedico WHERE ID_Med = ?";
-    $stmt_usuario_id = $conn->prepare($query_usuario_id);
-    $stmt_usuario_id->bind_param('i', $id_med);
-    $stmt_usuario_id->execute();
-    $result_usuario_id = $stmt_usuario_id->get_result();
+    try {
+        // Obtener el ID de usuario del médico
+        $query_usuario_id = "SELECT ID_Usuario FROM personalmedico WHERE ID_Med = ?";
+        $stmt_usuario_id = $pdo->prepare($query_usuario_id);
+        $stmt_usuario_id->execute([$id_med]);
+        $usuario = $stmt_usuario_id->fetch(PDO::FETCH_ASSOC);
 
-    if ($result_usuario_id->num_rows > 0) {
-      $row = $result_usuario_id->fetch_assoc();
-      $id_usuario = $row['ID_Usuario'];
+        if ($usuario) {
+            $id_usuario = $usuario['ID_Usuario'];
 
-      // Eliminar el médico de la tabla PersonalMedico
-      $query_medico = "DELETE FROM PersonalMedico WHERE ID_Med = ?";
-      $stmt_medico = $conn->prepare($query_medico);
-      $stmt_medico->bind_param('i', $id_med);
-      $stmt_medico->execute();
+            // Eliminar el médico de la tabla PersonalMedico
+            $query_medico = "DELETE FROM personalmedico WHERE ID_Med = ?";
+            $stmt_medico = $pdo->prepare($query_medico);
+            $stmt_medico->execute([$id_med]);
 
-      // Eliminar las credenciales del médico de la tabla Usuarios
-      $query_usuario = "DELETE FROM Usuarios WHERE ID_Usuario = ?";
-      $stmt_usuario = $conn->prepare($query_usuario);
-      $stmt_usuario->bind_param('i', $id_usuario);
-      $stmt_usuario->execute();
+            // Eliminar las credenciales del médico de la tabla Usuarios
+            $query_usuario = "DELETE FROM usuarios WHERE ID_Usuario = ?";
+            $stmt_usuario = $pdo->prepare($query_usuario);
+            $stmt_usuario->execute([$id_usuario]);
 
-      // Confirmar la transacción
-      $conn->commit();
+            // Confirmar la transacción
+            $pdo->commit();
 
-      header("Location: dashboard.php?seccion=gestionar_medicos");
-      exit();
-    } else {
-      throw new Exception("Médico no encontrado.");
+            header("Location: dashboard.php?seccion=gestionar_medicos");
+            exit();
+        } else {
+            throw new Exception("Médico no encontrado.");
+        }
+    } catch (Exception $e) {
+        // Revertir la transacción en caso de error
+        $pdo->rollBack();
+        echo "Error al eliminar: " . $e->getMessage();
     }
-  } catch (Exception $e) {
-    // Revertir la transacción en caso de error
-    $conn->rollback();
-    echo "Error al eliminar: " . $e->getMessage();
-  }
 }
 
-$conn->close();
+$pdo = null;
 ?>
