@@ -1,0 +1,371 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  background-color: #fff;
+}
+
+.title {
+  text-align: center;
+}
+
+form {
+  max-width: 500px;
+  margin: auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+label {
+  display: block;
+  margin: 10px 0 5px;
+}
+select {
+  width: 100%;
+  padding: 10px;
+  margin: 5px 0 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+input {
+  width: 100%;
+  margin: 5px 0 15px 5px;
+  border-radius: 3px;
+  padding: 10px 10px 10px 50px; /* Espacio para el ícono */
+  box-sizing: border-box;
+  font-size: 16px;
+  border: none;
+  margin-left: 10px;
+}
+
+input::placeholder {
+  font-weight: 700;
+}
+.message {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  height: 50px;
+  margin: 10px;
+}
+
+.success {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #6fcf97;
+  color: #fff;
+}
+
+.error {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #eb5757;
+  color: #fff;
+  height: 100%;
+  padding: 10px;
+}
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.styled-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 16px;
+  min-width: 800px; /* Ajustar el ancho mínimo para permitir el scroll horizontal */
+}
+
+.styled-table thead {
+  background: #4cafdb;
+  color: white;
+  text-align: left;
+}
+
+.styled-table th,
+.styled-table td {
+  padding: 10px;
+  /* border-bottom: 1px solid #ddd; */
+}
+
+.styled-table tbody tr:nth-child(even) {
+  background: #f3f3f3;
+}
+
+.styled-table tbody tr:hover {
+  background: #ddd;
+}
+
+.sidebar {
+  position: sticky;
+  top: 0;
+  left: 0;
+  min-width: 250px;
+  max-width: 250px;
+  background: #f2f2f2;
+  color: #333;
+  padding: 20px;
+  height: 100vh;
+}
+
+.sidebar a {
+  color: #333;
+  text-decoration: none;
+  display: block;
+  padding: 10px;
+  margin: 15px 0;
+  font-weight: 300;
+  border-radius: 3px;
+}
+.sidebar a.active {
+  color: #fff; /* Color del texto activo */
+  background-color: #4cafdb;
+}
+.sidebar a:hover {
+  background-color: #ddd;
+}
+
+.main {
+  flex-grow: 1;
+  padding: 20px;
+  background: linear-gradient(to bottom, #4cafdb 30%, #ddd 75%);
+}
+
+.card-container {
+  display: flex;
+  gap: 15px;
+}
+
+.card {
+  flex: 1;
+  padding: 20px;
+  text-align: center;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  border: none;
+  font-size: 16px;
+  text-decoration: none;
+}
+
+.card:hover {
+  opacity: 0.8;
+}
+
+.section {
+  width: 100%;
+  max-width: 990px;
+  padding: 15px;
+  border: 1px solid #ddd;
+  background: #f9f9f9;
+  border-radius: 10px;
+  -webkit-box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.3);
+  -moz-box-shadow: 0.31px.310px 5px 0px rgba(0, 0, 0, 0.3);
+  box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.3);
+}
+
+.orange {
+  background: #f2994a;
+}
+
+.green {
+  background: #6fcf97;
+}
+
+.blue {
+  background: #4cafdb;
+}
+
+.red {
+  background: #eb5757;
+}
+.black {
+  background-color: #333;
+}
+.container {
+  width: 80%;
+  margin: 0 auto;
+}
+
+.main-container {
+  display: flex;
+  width: 100%;
+  height: 100vmin;
+  background-color: #fff;
+  overflow: hidden;
+}
+
+.image-container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #fff;
+}
+
+.image-container img {
+  width: 100%;
+  height: auto;
+}
+
+.form-container {
+  flex: 1;
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  justify-content: center;
+  background: linear-gradient(to left, #4cb0dbae, #fff);
+  background-size: cover;
+  backdrop-filter: blur(10px);
+}
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+}
+
+.form-both {
+  display: flex;
+  flex-direction: column;
+}
+
+.btn {
+  padding: 8px 12px;
+  text-decoration: none;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+  color: white;
+  display: inline-block;
+  text-align: center;
+  margin: 2px;
+  cursor: pointer;
+}
+
+.btn:hover {
+  opacity: 0.8; /* Actualización de background en hover */
+}
+.container_both-inp {
+  width: 80%;
+  margin: 0 auto;
+}
+
+.form_both-inp {
+  max-width: 600px;
+  margin: auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.both-inp {
+  display: flex; /* Hace que el contenedor sea flexible */
+  flex-wrap: wrap; /* Permite que los elementos se envuelvan si es necesario */
+  gap: 10px; /* Añade un espacio entre los elementos */
+  margin-bottom: 15px;
+}
+
+.both-inp .input-group {
+  flex: 1 1 48%; /* Ajusta el ancho de cada grupo de inputs */
+  display: flex;
+  flex-direction: column; /* Coloca el label encima del input */
+}
+
+.both-inp label {
+  margin-bottom: 5px;
+}
+
+.both-inp input,
+.both-inp select,
+.both-inp button,
+.both-inp a.btn {
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+}
+.content {
+  max-height: 100px; /* Altura máxima para el contenido */
+  max-width: 200px;
+  overflow-y: auto; /* Scroll vertical para el contenido */
+  display: block; /* Necesario para que el scroll funcione correctamente */
+  white-space: pre-line; /* Mantiene los saltos de línea */
+}
+
+.input-container {
+  position: relative;
+  margin-bottom: 15px;
+}
+
+.input-container .icon-form-login {
+  position: absolute;
+  left: -0.5rem;
+  top: 42%;
+  transform: translateY(-50%);
+  color: #4cafdb;
+}
+.input-container .icon-form-register {
+  position: absolute;
+  left: -0.5rem;
+  top: 42%;
+  transform: translateY(-50%);
+  color: #4cafdb;
+}
+#togglePassword {
+  cursor: pointer;
+  position: absolute;
+  right: 0.3rem;
+  top: 42%;
+  transform: translateY(-50%);
+  color: #4cafdb;
+}
+
+input:focus {
+  outline: none;
+  border-bottom: 2px solid #4cb0dbae;
+}
+
+.tachado {
+  text-decoration: line-through;
+  color: #6fcf97;
+}
+.cancelado {
+  text-decoration: line-through;
+  color: #eb5757;
+}
+
+.th-content {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  width: 100%;
+}
+
+.th-content span {
+  margin-right: 8px;
+}
+
+.icon-table {
+  font-size: 14px;
+  cursor: pointer;
+}
+
+th.sort {
+  padding: 8px;
+}

@@ -1,0 +1,151 @@
+ID recibido: 15
+ID recibido: 15
+Datos recibidos: Array
+(
+    [id] => 15
+)
+
+ID recibido: 15
+Datos recibidos: Array
+(
+    [id] => 15
+)
+
+Datos recibidos: Array
+(
+    [id] => 15
+)
+
+ID recibido: 15 | Usuario ID: 9
+Datos recibidos: Array
+(
+    [id] => 15
+)
+
+Datos recibidos: Array
+(
+    [id] => 15
+)
+
+ID recibido: 15 | Usuario ID: 9
+Datos recibidos: Array
+(
+    [id] => 15
+)
+
+Datos recibidos: Array
+(
+    [id] => 15
+)
+
+ID recibido: 15 | Usuario ID: 9
+Datos recibidos: Array
+(
+    [id] => 15
+)
+
+Datos recibidos: Array
+(
+    [id] => 15
+)
+
+ID recibido: 15 | Usuario ID: 9
+Datos recibidos: Array
+(
+    [id] => 15
+)
+
+Datos recibidos: Array
+(
+    [id] => 15
+)
+
+ID recibido: 15 | Usuario ID: 9
+Datos recibidos: Array
+(
+    [id] => 15
+)
+
+Datos recibidos: Array
+(
+    [id] => 15
+)
+
+ID recibido: 15 | Usuario ID: 9
+Datos recibidos: Array
+(
+    [id] => 15
+)
+
+Datos recibidos: Array
+(
+    [id] => 15
+)
+
+ID recibido: 15 | Usuario ID: 9
+Datos recibidos: Array
+(
+    [id] => 15
+)
+
+Datos recibidos: Array
+(
+    [id] => 15
+)
+
+ID recibido: 15 | Usuario ID: 9
+Datos recibidos: Array
+(
+    [id] => 15
+)
+
+Datos recibidos: Array
+(
+    [id] => 15
+)
+
+ID recibido: 15 | Usuario ID: 9
+Datos recibidos: Array
+(
+    [id] => 15
+)
+
+Datos recibidos: Array
+(
+    [id] => 15
+)
+
+ID recibido: 15 | Usuario ID: 9
+Datos recibidos: Array
+(
+    [id] => 15
+)
+
+Datos recibidos: Array
+(
+    [id] => 15
+)
+
+ID recibido: 15 | Usuario ID: 9
+Datos recibidos: Array
+(
+    [id] => 15
+)
+
+Datos recibidos: Array
+(
+    [id] => 15
+)
+
+ID recibido: 15 | Usuario ID: 9
+Datos recibidos: Array
+(
+    [id] => 16
+)
+
+Datos recibidos: Array
+(
+    [id] => 16
+)
+
+ID recibido: 16 | Usuario ID: 9

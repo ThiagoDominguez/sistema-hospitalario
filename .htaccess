@@ -1,0 +1,19 @@
+# Este archivo .htaccess contiene reglas de reescritura para redirigir todas las solicitudes HTTP a HTTPS.
+
+#
+
+# - `RewriteEngine On`: Activa el motor de reescritura de Apache.
+
+# - `RewriteCond %{HTTP:X-Forwarded-Proto} !https`: Verifica si el encabezado `X-Forwarded-Proto` no es `https`.
+
+# - `RewriteCond %{HTTPS} off`: Verifica si la conexión HTTPS está desactivada.
+
+# - `RewriteCond %{HTTP:CF-Visitor} !{"scheme":"https"}`: Verifica si el encabezado `CF-Visitor` de Cloudflare no tiene el esquema `https`.
+
+# - `RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]`: Redirige todas las solicitudes a la versión HTTPS de la URL solicitada con un redireccionamiento permanente (código de estado 301).
+
+RewriteEngine On
+RewriteCond %{HTTP:X-Forwarded-Proto} !https
+RewriteCond %{HTTPS} off
+RewriteCond %{HTTP:CF-Visitor} !{"scheme":"https"}
+RewriteRule (.\*) https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
