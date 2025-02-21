@@ -3,77 +3,84 @@
 $(document).ready(function () {
   // Registrar Médico
   $("#btnRegistrarMedico").on("click", function () {
+    // Cuando se hace clic en el botón "Registrar Médico", se muestra un cuadro de diálogo de Swal.fire()
     Swal.fire({
-      grow: "row",
-      position: "top",
-      background: "transparent",
+      grow: "row", // Hace que el cuadro de diálogo crezca horizontalmente
+      position: "top", // Posiciona el cuadro de diálogo en la parte superior
+      background: "transparent", // Establece un fondo transparente para el cuadro de diálogo
       html: `
-        <div class="container_both-inp">
-          <form id="registerForm" method="POST" class="form_both-inp">
-            <div class="both-inp">
-              <div class="input-group">
-                <input type="text" id="nombre" name="Nombre" placeholder="Nombre" required>
-              </div>
-              <div class="input-group">
-                <input type="text" id="apellido" name="Apellido" placeholder="Apellido" required>
-              </div>
+      <div class="container_both-inp">
+        <form id="registerForm" method="POST" class="form_both-inp">
+          <div class="both-inp">
+            <div class="input-group">
+              <input type="text" id="nombre" name="Nombre" placeholder="Nombre" required>
             </div>
-            <div class="both-inp">
-              <div class="input-group">
-                <input type="email" id="email" name="EmailMed" placeholder="Email" required>
-              </div>
-              <div class="input-group">
-                <input type="password" id="contraseña" name="Contraseña" placeholder="Contraseña" required>
-              </div>
+            <div class="input-group">
+              <input type="text" id="apellido" name="Apellido" placeholder="Apellido" required>
             </div>
-            <div class="both-inp">
-              <div class="input-group">
-                <input type="text" id="dir" name="DirMed" placeholder="Dirección" required>
-              </div>
-              <div class="input-group">
-                <input type="text" id="celular" name="CelMed" placeholder="Celular">
-              </div>
+          </div>
+          <div class="both-inp">
+            <div class="input-group">
+              <input type="email" id="email" name="EmailMed" placeholder="Email" required>
             </div>
-            <div class="both-inp">
-              <div class="input-group">
-                <select id="genero" name="GenMed">
-                  <option value="M">Masculino</option>
-                  <option value="F">Femenino</option>
-                </select>
-              </div>
-              <div class="input-group">
-                <input type="text" id="especialidad" name="EspecialidadMed" placeholder="Especialidad" required>
-              </div>
+            <div class="input-group">
+              <input type="password" id="contraseña" name="Contraseña" placeholder="Contraseña" required>
             </div>
-            <div class="both-inp">
-              <button type="submit" class="btn blue">Guardar Cambios</button>
-              <button type="button" class="btn red" id="cancelButton">Cancelar</button>
+          </div>
+          <div class="both-inp">
+            <div class="input-group">
+              <input type="text" id="dir" name="DirMed" placeholder="Dirección" required>
             </div>
-          </form>
-        </div>
-      `,
-      showConfirmButton: false,
+            <div class="input-group">
+              <input type="text" id="celular" name="CelMed" placeholder="Celular">
+            </div>
+          </div>
+          <div class="both-inp">
+            <div class="input-group">
+              <select id="genero" name="GenMed">
+                <option value="M">Masculino</option>
+                <option value="F">Femenino</option>
+              </select>
+            </div>
+            <div class="input-group">
+              <input type="text" id="especialidad" name="EspecialidadMed" placeholder="Especialidad" required>
+            </div>
+          </div>
+          <div class="both-inp">
+            <button type="submit" class="btn blue">Guardar Cambios</button>
+            <button type="button" class="btn red" id="cancelButton">Cancelar</button>
+          </div>
+        </form>
+      </div>
+    `,
+      showConfirmButton: false, // No se muestra el botón de confirmación
       didOpen: () => {
+        // Cuando se abre el cuadro de diálogo, se agregan los siguientes eventos:
         $("#cancelButton").on("click", function () {
+          // Al hacer clic en el botón "Cancelar", se cierra el cuadro de diálogo
           Swal.close();
         });
 
         $("#registerForm").on("submit", function (e) {
-          e.preventDefault();
+          // Cuando se envía el formulario de registro
+          e.preventDefault(); // Se evita el envío del formulario por defecto
           $.ajax({
             type: "POST",
-            url: "registro_medico.php",
-            data: $("#registerForm").serialize(),
+            url: "registro_medico.php", // Se envía una solicitud POST a este archivo
+            data: $("#registerForm").serialize(), // Se envían los datos del formulario
             success: function (response) {
               if (response.status === "success") {
+                // Si la respuesta indica éxito
                 Swal.fire({
                   icon: "success",
                   title: "Registro exitoso",
                   text: "El médico ha sido registrado correctamente.",
                 }).then(() => {
+                  // Después de mostrar el mensaje de éxito, se recarga la página
                   window.location.reload();
                 });
               } else {
+                // Si la respuesta indica error
                 Swal.fire({
                   icon: "error",
                   title: "Error",
@@ -82,6 +89,7 @@ $(document).ready(function () {
               }
             },
             error: function () {
+              // Si ocurre un error en la solicitud AJAX
               Swal.fire({
                 icon: "error",
                 title: "Error",
@@ -94,101 +102,120 @@ $(document).ready(function () {
     });
   });
 
-  // Editar Médico
+  // **Editar Médico**
+  // Este código permite editar la información de un médico utilizando un cuadro de diálogo interactivo de SweetAlert2 (Swal.fire).
+  // Se activa al hacer clic en un botón con la clase "btnEditarMedico".
+
   $(document).on("click", ".btnEditarMedico", function () {
+    // Obtiene el ID del médico desde el atributo `data-id` del botón que fue clicado.
     const idMed = $(this).data("id");
 
+    // **Solicitud AJAX para obtener los datos del médico**
+    // Se realiza una solicitud GET al archivo "editar_medico.php" para obtener los datos del médico con el ID especificado.
     $.ajax({
-      url: "editar_medico.php",
-      type: "GET",
-      data: { id: idMed },
+      url: "editar_medico.php", // URL del archivo PHP que devuelve los datos del médico.
+      type: "GET", // Método HTTP utilizado para la solicitud.
+      data: { id: idMed }, // Se envía el ID del médico como parámetro.
       success: function (response) {
+        // Si la solicitud es exitosa, se obtiene la información del médico desde la respuesta.
         const medico = response.medico;
 
+        // **Mostrar cuadro de diálogo para editar**
+        // Se utiliza SweetAlert2 para mostrar un formulario con los datos del médico precargados.
         Swal.fire({
-          grow: "row",
-          position: "top",
-          background: "transparent",
+          grow: "row", // Hace que el cuadro de diálogo crezca horizontalmente.
+          position: "top", // Posiciona el cuadro de diálogo en la parte superior.
+          background: "transparent", // Establece un fondo transparente para el cuadro de diálogo.
           html: `
-            <div class="container_both-inp">
-              <form id="editForm" method="POST" class="form_both-inp">
-                <div class="both-inp">
-                  <div class="input-group">
-                    <input type="text" id="nombre" name="nombre" value="${
-                      medico.NomMed
-                    }" required>
-                  </div>
-                  <div class="input-group">
-                    <input type="text" id="apellido" name="apellido" value="${
-                      medico.ApellidoMed
-                    }" required>
-                  </div>
+          <div class="container_both-inp">
+            <form id="editForm" method="POST" class="form_both-inp">
+              <div class="both-inp">
+                <div class="input-group">
+                  <input type="text" id="nombre" name="nombre" value="${
+                    medico.NomMed
+                  }" required>
                 </div>
-                <div class="both-inp">
-                  <div class="input-group">
-                    <input type="text" id="direccion" name="direccion" value="${
-                      medico.DirMed
-                    }" required>
-                  </div>
-                  <div class="input-group">
-                    <input type="text" id="celular" name="celular" value="${
-                      medico.CelMed
-                    }" required>
-                  </div>
+                <div class="input-group">
+                  <input type="text" id="apellido" name="apellido" value="${
+                    medico.ApellidoMed
+                  }" required>
                 </div>
-                <div class="both-inp">
-                  <div class="input-group">
-                    <input type="email" id="email" name="email" value="${
-                      medico.EmailMed
-                    }" required>
-                  </div>
-                  <div class="input-group">
-                    <select id="genero" name="genero">
-                      <option value="M" ${
-                        medico.GenMed === "M" ? "selected" : ""
-                      }>Masculino</option>
-                      <option value="F" ${
-                        medico.GenMed === "F" ? "selected" : ""
-                      }>Femenino</option>
-                    </select>
-                  </div>
+              </div>
+              <div class="both-inp">
+                <div class="input-group">
+                  <input type="text" id="direccion" name="direccion" value="${
+                    medico.DirMed
+                  }" required>
                 </div>
-                <div class="both-inp">
-                  <div class="input-group">
-                    <input type="text" id="especialidad" name="especialidad" value="${
-                      medico.EspecialidadMed
-                    }" required>
-                  </div>
+                <div class="input-group">
+                  <input type="text" id="celular" name="celular" value="${
+                    medico.CelMed
+                  }" required>
                 </div>
-                <div class="both-inp">
-                  <button type="submit" class="btn blue">Guardar Cambios</button>
-                  <button type="button" class="btn red" id="cancelButton">Cancelar</button>
+              </div>
+              <div class="both-inp">
+                <div class="input-group">
+                  <input type="email" id="email" name="email" value="${
+                    medico.EmailMed
+                  }" required>
                 </div>
-              </form>
-            </div>
-          `,
-          showConfirmButton: false,
+                <div class="input-group">
+                  <select id="genero" name="genero">
+                    <option value="M" ${
+                      medico.GenMed === "M" ? "selected" : ""
+                    }>Masculino</option>
+                    <option value="F" ${
+                      medico.GenMed === "F" ? "selected" : ""
+                    }>Femenino</option>
+                  </select>
+                </div>
+              </div>
+              <div class="both-inp">
+                <div class="input-group">
+                  <input type="text" id="especialidad" name="especialidad" value="${
+                    medico.EspecialidadMed
+                  }" required>
+                </div>
+              </div>
+              <div class="both-inp">
+                <button type="submit" class="btn blue">Guardar Cambios</button>
+                <button type="button" class="btn red" id="cancelButton">Cancelar</button>
+              </div>
+            </form>
+          </div>
+        `,
+          showConfirmButton: false, // No se muestra el botón de confirmación predeterminado.
           didOpen: () => {
+            // **Evento para el botón "Cancelar"**
+            // Cierra el cuadro de diálogo al hacer clic en el botón "Cancelar".
             $("#cancelButton").on("click", function () {
               Swal.close();
             });
 
+            // **Evento para el envío del formulario**
+            // Se ejecuta cuando el formulario es enviado.
             $("#editForm").on("submit", function (e) {
-              e.preventDefault();
+              e.preventDefault(); // Previene el comportamiento predeterminado del formulario.
+
+              // **Solicitud AJAX para actualizar los datos del médico**
+              // Envía los datos del formulario al archivo "editar_medico.php" utilizando el método POST.
               $.ajax({
-                type: "POST",
-                url: "editar_medico.php",
-                data: $("#editForm").serialize() + "&id=" + idMed,
+                type: "POST", // Método HTTP utilizado para la solicitud.
+                url: "editar_medico.php", // URL del archivo PHP que procesa la actualización.
+                data: $("#editForm").serialize() + "&id=" + idMed, // Serializa los datos del formulario y agrega el ID del médico.
                 success: function (response) {
+                  // Si la solicitud es exitosa, muestra un mensaje de éxito.
                   Swal.fire({
                     icon: "success",
                     title: "Actualización exitosa",
                     text: "El médico ha sido actualizado correctamente.",
                   }).then(() => {
+                    // Recarga la página después de cerrar el mensaje de éxito.
                     window.location.reload();
                   });
                 },
                 error: function () {
+                  // Si ocurre un error en la solicitud, muestra un mensaje de error.
                   Swal.fire({
                     icon: "error",
                     title: "Error",
@@ -201,6 +228,7 @@ $(document).ready(function () {
         });
       },
       error: function () {
+        // Si ocurre un error al obtener los datos del médico, muestra un mensaje de error.
         Swal.fire({
           icon: "error",
           title: "Error",
@@ -210,47 +238,60 @@ $(document).ready(function () {
     });
   });
 
-  // Eliminar Médico
+  // **Eliminar Médico**
+  // Este código permite eliminar un médico de la base de datos utilizando un cuadro de confirmación interactivo de SweetAlert2 (Swal.fire).
+  // Se activa al hacer clic en un botón con la clase "btnEliminarMedico".
+
   $(document).on("click", ".btnEliminarMedico", function () {
+    // Obtiene el ID del médico desde el atributo `data-id` del botón que fue clicado.
     const idMed = $(this).data("id");
 
+    // **Mostrar cuadro de confirmación**
+    // Se utiliza SweetAlert2 para mostrar un cuadro de diálogo que solicita confirmación antes de eliminar al médico.
     Swal.fire({
-      title: "¿Estás seguro de eliminar este médico?",
-      text: "¡Esta acción no se puede deshacer!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#d33",
-      cancelButtonColor: "#3085d6",
-      confirmButtonText: "Sí, eliminarlo",
-      cancelButtonText: "Cancelar",
+      title: "¿Estás seguro de eliminar este médico?", // Título del cuadro de diálogo.
+      text: "¡Esta acción no se puede deshacer!", // Mensaje de advertencia.
+      icon: "warning", // Icono de advertencia.
+      showCancelButton: true, // Muestra un botón para cancelar la acción.
+      confirmButtonColor: "#d33", // Color del botón de confirmación.
+      cancelButtonColor: "#3085d6", // Color del botón de cancelación.
+      confirmButtonText: "Sí, eliminarlo", // Texto del botón de confirmación.
+      cancelButtonText: "Cancelar", // Texto del botón de cancelación.
     }).then((result) => {
+      // **Si el usuario confirma la acción**
       if (result.isConfirmed) {
+        // **Solicitud AJAX para eliminar al médico**
+        // Envía una solicitud POST al archivo "eliminar_medico.php" para eliminar al médico con el ID especificado.
         $.ajax({
-          type: "POST",
-          url: "eliminar_medico.php",
-          data: { id: idMed, action: "delete" },
+          type: "POST", // Método HTTP utilizado para la solicitud.
+          url: "eliminar_medico.php", // URL del archivo PHP que procesa la eliminación.
+          data: { id: idMed, action: "delete" }, // Se envía el ID del médico y una acción "delete" como parámetros.
           success: function (response) {
+            // **Si la eliminación es exitosa**
             if (response.status === "success") {
               Swal.fire({
-                icon: "success",
-                title: "Eliminado",
-                text: "El médico ha sido eliminado correctamente.",
+                icon: "success", // Icono de éxito.
+                title: "Eliminado", // Título del mensaje.
+                text: "El médico ha sido eliminado correctamente.", // Mensaje de confirmación.
               }).then(() => {
+                // Recarga la página después de cerrar el mensaje de éxito.
                 window.location.reload();
               });
             } else {
+              // **Si ocurre un error en la eliminación**
               Swal.fire({
-                icon: "error",
-                title: "Error",
-                text: "Hubo un error al eliminar el médico.",
+                icon: "error", // Icono de error.
+                title: "Error", // Título del mensaje.
+                text: "Hubo un error al eliminar el médico.", // Mensaje de error.
               });
             }
           },
           error: function () {
+            // **Si ocurre un error en la solicitud AJAX**
             Swal.fire({
-              icon: "error",
-              title: "Error",
-              text: "Hubo un error al eliminar el médico.",
+              icon: "error", // Icono de error.
+              title: "Error", // Título del mensaje.
+              text: "Hubo un error al eliminar el médico.", // Mensaje de error.
             });
           },
         });
