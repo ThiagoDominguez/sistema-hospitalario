@@ -104,10 +104,6 @@ $(document).ready(function () {
     optionsGestionTurnos
   );
 
-  // Inicializar List.js para otras secciones si es necesario
+ 
 });
 
-// var options = {
-//     valueNames: ["id_turno", "medico", "fecha", "hora"],
-//   };
-//   var turnosList = new List("turnos-list", options);
