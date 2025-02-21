@@ -8,10 +8,17 @@ error_reporting(E_ALL);
 // Conexión a la base de datos
 include("../config.php");
 
+/* Las líneas `$ login_success = false;` y `$ error = '';` están inicializando dos variables en PHP. */
 $login_success = false;
 $error = '';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+  /*Las líneas `= trim (['email']);` y `= trim (['password']);` son para
+  recuperar los valores de los campos de 'correo electrónico' y 'contraseña' de una solicitud de publicación, recortando cualquier espacio en blanco extra
+   desde el principio y el final de la entrada, y almacenarlos en las variables y
+   respectivamente. Esto ayuda a limpiar los datos de entrada antes del procesamiento posterior,
+  Asegurar que no haya espacios no deseados que puedan afectar la validación o comparación
+  procesos.*/
   $email = trim($_POST['email']);
   $password = trim($_POST['password']);
 
@@ -88,6 +95,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script>
+    /*El código JavaScript que proporcionó está agregando un oyente de eventos al elemento con la ID
+    'TogglePassword'. Cuando se hace clic en este elemento, la función dentro del oyente del evento es
+    ejecutado. */
     document.getElementById('togglePassword').addEventListener('click', function (e) {
       const passwordInput = document.getElementById('password');
       const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
@@ -95,6 +105,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       this.classList.toggle('fa-eye-slash');
     });
 
+    /* Este bloque de código PHP es responsable de mostrar un mensaje de éxito utilizando el Sweetalert2
+    Biblioteca si el inicio de sesión fue exitoso.*/
     <?php if ($login_success): ?>
       Swal.fire({
         icon: 'success',
@@ -105,6 +117,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       }).then(function () {
         window.location.href = "<?= $redirect_url ?>";
       });
+      /*Este bloque de código PHP está verificando si la variable `` no está vacía. Si la variable ``
+      contiene cualquier mensaje de error (lo que significa que hubo un problema durante el proceso de inicio de sesión),
+      Muestre un modal Sweetalert usando la función `Swal.fire ()` de la biblioteca Sweetalert2. */
     <?php elseif (!empty($error)): ?>
       Swal.fire({
         icon: 'error',
