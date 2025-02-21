@@ -7,6 +7,8 @@ error_reporting(E_ALL);
 // Conexión a la base de datos
 include("config.php");
 
+
+/*Las líneas `= false;` y `= '';` están inicializando dos variables*/
 $registro_exitoso = false;
 $error = '';
 
@@ -50,13 +52,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       // Insertar el usuario en la tabla Usuarios
       $id_rol = 1; // Rol de paciente (según la tabla Roles)
       $stmt = $pdo->prepare("INSERT INTO usuarios (Email, Contraseña, ID_Rol) VALUES (?, ?, ?)");
+      /*La línea `-> bindParam (1 ,, PDO :: param_str);` está vinculando un valor a un parámetro en un
+      Declaración SQL preparada. Aquí hay un desglose de lo que cada parte está haciendo: */
       $stmt->bindParam(1, $email, PDO::PARAM_STR);
       $stmt->bindParam(2, $contraseña_hash, PDO::PARAM_STR);
       $stmt->bindParam(3, $id_rol, PDO::PARAM_INT);
       $stmt->execute();
       $id_usuario = $pdo->lastInsertId(); // Obtener el ID del usuario recién creado
 
-      // Insertar el paciente en la base de datos
+
+      /*Este bloque de código está preparando una instrucción SQL para insertar un nuevo registro en el 'Pacientes`
+      tabla en la base de datos. Aquí hay un desglose de lo que cada parte está haciendo: */
       $stmt = $pdo->prepare("INSERT INTO pacientes (Nombre, Apellido, DNIPac, EmailPac, CelPac, GenPac, FechaNacimiento, DirPac, ID_Usuario) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
       $stmt->bindParam(1, $nombre, PDO::PARAM_STR);
       $stmt->bindParam(2, $apellido, PDO::PARAM_STR);
@@ -68,10 +74,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       $stmt->bindParam(8, $direccion, PDO::PARAM_STR);
       $stmt->bindParam(9, $id_usuario, PDO::PARAM_INT);
 
+      /* Este bloque de código está comprobando el resultado de ejecutar una instrucción SQL preparada utilizando
+      `-> execute ()`.*/
       if ($stmt->execute()) {
-        $registro_exitoso = true;
+        $registro_exitoso = true;// Si la ejecución de la consulta es exitosa, establecer la variable `$registro_exitoso` en `true`
       } else {
-        $error = "Error al registrar el paciente: " . $pdo->errorInfo()[2];
+        $error = "Error al registrar el paciente: " . $pdo->errorInfo()[2];// Si la ejecución de la consulta falla, establecer la variable `$error` en un mensaje de error
       }
     }
   }
@@ -173,6 +181,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script>
+    /* Este fragmento de código JavaScript está agregando un oyente de eventos al elemento con la identificación
+    `TogglePassword`. Cuando se hace clic en este elemento, Se ejecuta el método `AddEventListener`*/
     document.getElementById('togglePassword').addEventListener('click', function (e) {
       const passwordInput = document.getElementById('contraseña');
       const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
@@ -180,22 +190,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       this.classList.toggle('fa-eye-slash');
     });
 
+    /* Este bloque de código PHP está verificando el valor de la variable $registro_exitoso. Si evalúa para `True`, mostrará un mensaje de éxito utilizando la función 'Swal.fire` del Sweetalert2. El mensaje de éxito incluye un icono, título y texto. Además, establece un temporizador
+    para 2000 milisegundos (2 segundos) antes de redirigir al usuario a la página de inicio de sesión utilizando JavaScript
+    (`window.location.href =" paginas/login.php ";`).*/
     <?php if ($registro_exitoso): ?>
-      Swal.fire({
-        icon: 'success',
-        title: 'Registro exitoso',
-        text: 'Redirigiendo al login...',
-        showConfirmButton: false,
-        timer: 2000
-      }).then(function () {
-        window.location.href = "paginas/login.php";
-      });
+    Swal.fire({
+      icon: 'success',
+      title: 'Registro exitoso',
+      text: 'Redirigiendo al login...',
+      showConfirmButton: false,
+      timer: 2000
+    }).then(function () {
+      window.location.href = "paginas/login.php";
+    });
+    /* Este bloque de código PHP está verificando si la variable $error no está vacía. Si la variable $error
+    no está vacío, significa que hubo un error durante el proceso de registro. En ese caso, usa
+    La biblioteca Sweetalert2 para mostrar un mensaje de error al usuario.*/
     <?php elseif (!empty($error)): ?>
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: '<?= $error ?>'
-      });
+    Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: '<?= $error ?>'
+    });
     <?php endif; ?>
   </script>
 </body>
