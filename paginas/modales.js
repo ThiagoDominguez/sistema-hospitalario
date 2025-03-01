@@ -1494,42 +1494,64 @@ $(document).ready(function () {
       `,
       showConfirmButton: false,
       didOpen: () => {
+        // Cerrar el modal al hacer clic en "Cancelar"
         $("#cancelButton").on("click", function () {
           Swal.close();
         });
 
+        // Manejar el envío del formulario
         $("#registroForm").on("submit", function (e) {
           e.preventDefault();
+
+          // Depuración: Verificar los datos del formulario
           var formData = new FormData(this);
+          for (let [key, value] of formData.entries()) {
+          }
+
+          // Enviar el formulario mediante AJAX
           $.ajax({
             type: "POST",
             url: "registro_informe.php",
             data: formData,
-            contentType: false,
-            processData: false,
+            contentType: false, // Importante para enviar archivos
+            processData: false, // Importante para enviar archivos
             success: function (response) {
-              if (response.status === "success") {
-                Swal.fire({
-                  icon: "success",
-                  title: "Registro exitoso",
-                  text: response.message,
-                }).then(() => {
-                  window.location.reload();
-                });
-              } else {
+              try {
+                // Intentar parsear la respuesta como JSON
+                const data = JSON.parse(response);
+
+                if (data.status === "success") {
+                  // Mostrar mensaje de éxito
+                  Swal.fire({
+                    icon: "success",
+                    title: "Registro exitoso",
+                    text: data.message,
+                  }).then(() => {
+                    window.location.reload(); // Recargar la página después de un registro exitoso
+                  });
+                } else {
+                  // Mostrar mensaje de error
+                  Swal.fire({
+                    icon: "error",
+                    title: "Error",
+                    text: data.message,
+                  });
+                }
+              } catch (e) {
+                // Manejar errores de parseo de JSON
                 Swal.fire({
                   icon: "error",
                   title: "Error",
-                  text: response.message,
+                  text: "Hubo un error al procesar la respuesta del servidor.",
                 });
               }
             },
             error: function (xhr) {
-              var response = JSON.parse(xhr.responseText);
+              // Manejar errores de la solicitud AJAX
               Swal.fire({
                 icon: "error",
                 title: "Error",
-                text: response.message,
+                text: "Hubo un error al registrar el informe. Por favor, inténtalo de nuevo.",
               });
             },
           });
